@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import { MEPSState, Medication, PatientInfo, DrugInteraction, DosageCalculation } from './types/medical';
+import { useState, useEffect } from 'react';
+import { MEPSState, Medication, PatientInfo } from './types/medical';
 import MedicationForm from './components/MedicationForm';
 import PatientForm from './components/PatientForm';
 import ResultsDisplay from './components/ResultsDisplay';
@@ -8,7 +8,6 @@ import { DrugInteractionService } from './services/drugInteractions';
 import { DosageCalculatorService } from './services/dosageCalculator';
 import { AllergyCheckerService } from './services/allergyChecker';
 import { StorageService } from './services/storageService';
-import AllergyAlerts from './components/AllergyAlerts';
 import DataManagement from './components/DataManagement';
 
 const initialPatientInfo: PatientInfo = {
@@ -141,7 +140,7 @@ function App() {
   };
 
   // Load data on component mount
-  React.useEffect(() => {
+  useEffect(() => {
     const savedPatientInfo = StorageService.loadPatientInfo();
     const savedMedications = StorageService.loadMedications();
     
@@ -155,7 +154,7 @@ function App() {
   }, []);
 
   // Save data when it changes
-  React.useEffect(() => {
+  useEffect(() => {
     if (state.medications.length > 0) {
       StorageService.saveMedications(state.medications);
     }

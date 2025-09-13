@@ -150,7 +150,7 @@ export class AllergyCheckerService {
         // Find matching allergy rules
         const matchingRules = ALLERGY_DATABASE.filter(rule => 
           this.matchesAllergen(allergyLower, rule.allergen) ||
-          this.matchesAllergen(allergyLower, rule.crossReactive)
+          rule.crossReactive.some(crossReactive => this.matchesAllergen(allergyLower, crossReactive))
         );
         
         matchingRules.forEach(rule => {

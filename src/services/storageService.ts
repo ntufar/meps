@@ -1,5 +1,5 @@
 // Local storage service for data persistence
-import { MEPSState, PatientInfo, Medication } from '../types/medical';
+import { PatientInfo, Medication } from '../types/medical';
 
 const STORAGE_KEYS = {
   PATIENT_INFO: 'meps_patient_info',

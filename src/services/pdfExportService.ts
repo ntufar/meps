@@ -1,5 +1,5 @@
 // PDF export service for safety reports
-import { MEPSState, DrugInteraction, DosageCalculation, AllergyAlert } from '../types/medical';
+import { MEPSState } from '../types/medical';
 
 export class PDFExportService {
   static generateSafetyReport(state: MEPSState): string {
