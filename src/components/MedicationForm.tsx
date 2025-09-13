@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Medication } from '../types/medical';
+import MedicationSearch from './MedicationSearch';
 
 interface MedicationFormProps {
   medications: Medication[];
@@ -19,6 +20,7 @@ const MedicationForm: React.FC<MedicationFormProps> = ({ medications, onAddMedic
   });
 
   const [errors, setErrors] = useState<Record<string, string>>({});
+  const [showSearch, setShowSearch] = useState(false);
 
   const validateForm = (): boolean => {
     const newErrors: Record<string, string> = {};
@@ -80,6 +82,11 @@ const MedicationForm: React.FC<MedicationFormProps> = ({ medications, onAddMedic
     }
   };
 
+  const handleSearchSelect = (medication: Medication) => {
+    setFormData(medication);
+    setShowSearch(false);
+  };
+
   return (
     <div className="space-y-8">
       <div className="text-center">
@@ -87,6 +94,20 @@ const MedicationForm: React.FC<MedicationFormProps> = ({ medications, onAddMedic
           Add Medication
         </h2>
         <p className="text-slate-600 text-lg">Enter medication details for comprehensive safety checking</p>
+      </div>
+
+      {/* Quick Search Button */}
+      <div className="mb-6">
+        <button
+          type="button"
+          onClick={() => setShowSearch(true)}
+          className="w-full bg-gradient-to-r from-green-500 to-green-600 text-white py-3 px-6 rounded-xl font-semibold hover:from-green-600 hover:to-green-700 transition-all duration-200 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
+        >
+          🔍 Quick Search Medications
+        </button>
+        <p className="text-center text-sm text-gray-600 mt-2">
+          Or fill out the form manually below
+        </p>
       </div>
 
       <form onSubmit={handleSubmit} className="space-y-6">
@@ -256,6 +277,14 @@ const MedicationForm: React.FC<MedicationFormProps> = ({ medications, onAddMedic
             ))}
           </div>
         </div>
+      )}
+
+      {/* Medication Search Modal */}
+      {showSearch && (
+        <MedicationSearch
+          onSelectMedication={handleSearchSelect}
+          onClose={() => setShowSearch(false)}
+        />
       )}
     </div>
   );

@@ -1,5 +1,6 @@
 import React from 'react';
 import { DrugInteraction, DosageCalculation } from '../types/medical';
+import { DrugInteractionService } from '../services/drugInteractions';
 
 interface ResultsDisplayProps {
   interactions: DrugInteraction[];
@@ -15,18 +16,7 @@ const ResultsDisplay: React.FC<ResultsDisplayProps> = ({
   error
 }) => {
   const getSeverityColor = (severity: string) => {
-    switch (severity) {
-      case 'contraindicated':
-        return 'bg-red-100 text-red-800 border-red-200';
-      case 'major':
-        return 'bg-red-100 text-red-800 border-red-200';
-      case 'moderate':
-        return 'bg-yellow-100 text-yellow-800 border-yellow-200';
-      case 'minor':
-        return 'bg-blue-100 text-blue-800 border-blue-200';
-      default:
-        return 'bg-gray-100 text-gray-800 border-gray-200';
-    }
+    return DrugInteractionService.getSeverityColor(severity);
   };
 
   const getEvidenceColor = (evidence: string) => {
@@ -102,9 +92,12 @@ const ResultsDisplay: React.FC<ResultsDisplayProps> = ({
               >
                 <div className="flex items-start justify-between mb-2">
                   <h4 className="font-semibold">{interaction.description}</h4>
-                  <span className={`px-2 py-1 rounded text-xs font-medium ${getSeverityColor(interaction.severity)}`}>
-                    {interaction.severity.toUpperCase()}
-                  </span>
+                  <div className="flex items-center space-x-2">
+                    <span className="text-lg">{DrugInteractionService.getSeverityIcon(interaction.severity)}</span>
+                    <span className={`px-3 py-1 rounded-full text-xs font-bold ${getSeverityColor(interaction.severity)}`}>
+                      {interaction.severity.toUpperCase()}
+                    </span>
+                  </div>
                 </div>
                 
                 <div className="space-y-2 text-sm">

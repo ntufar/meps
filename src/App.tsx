@@ -4,6 +4,8 @@ import MedicationForm from './components/MedicationForm';
 import PatientForm from './components/PatientForm';
 import ResultsDisplay from './components/ResultsDisplay';
 import Header from './components/Header';
+import { DrugInteractionService } from './services/drugInteractions';
+import { DosageCalculatorService } from './services/dosageCalculator';
 
 const initialPatientInfo: PatientInfo = {
   age: 0,
@@ -51,22 +53,12 @@ function App() {
       // Simulate API call for drug interactions
       await new Promise(resolve => setTimeout(resolve, 1000));
       
-      // Mock interaction data for demonstration
-      const mockInteractions: DrugInteraction[] = [
-        {
-          id: '1',
-          severity: 'moderate',
-          description: 'Warfarin and Aspirin',
-          clinicalEffect: 'Increased bleeding risk',
-          management: 'Monitor INR closely, consider lower aspirin dose',
-          evidence: 'good',
-          references: ['Drug Interaction Database 2024']
-        }
-      ];
+      // Use the drug interaction service
+      const interactions = DrugInteractionService.checkInteractions(state.medications);
 
       setState(prev => ({
         ...prev,
-        interactions: mockInteractions,
+        interactions,
         isLoading: false
       }));
     } catch (error) {
@@ -85,21 +77,14 @@ function App() {
       // Simulate API call for dosage calculations
       await new Promise(resolve => setTimeout(resolve, 1000));
       
-      // Mock dosage calculations
-      const mockCalculations: DosageCalculation[] = state.medications.map(med => ({
-        medication: med,
-        patientInfo: state.patientInfo,
-        calculatedDose: 10, // Mock calculation
-        unit: med.unit,
-        frequency: med.frequency,
-        maxDailyDose: 40,
-        warnings: ['Monitor for side effects'],
-        adjustments: ['Consider renal function']
-      }));
+      // Use the dosage calculator service
+      const calculations = state.medications.map(med => 
+        DosageCalculatorService.calculateDosage(med, state.patientInfo)
+      );
 
       setState(prev => ({
         ...prev,
-        dosageCalculations: mockCalculations,
+        dosageCalculations: calculations,
         isLoading: false
       }));
     } catch (error) {
