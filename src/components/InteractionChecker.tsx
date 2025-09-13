@@ -60,7 +60,7 @@ const InteractionChecker: React.FC<InteractionCheckerProps> = ({
                   {interaction.severity.toUpperCase()}
                 </span>
               </div>
-              <p className="text-sm text-gray-700">{interaction.clinicalEffect}</p>
+              <p className="text-sm text-gray-700">{interaction.mechanism}</p>
               <p className="text-sm text-gray-600 mt-1">{interaction.management}</p>
             </div>
           ))}

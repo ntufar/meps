@@ -121,10 +121,10 @@ export class PDFExportService {
           <div class="alert alert-warning">
             <strong>${interaction.description}</strong><br>
             <strong>Severity:</strong> <span class="severity-badge ${severityClass}">${interaction.severity.toUpperCase()}</span><br>
-            <strong>Clinical Effect:</strong> ${interaction.clinicalEffect}<br>
+            <strong>Mechanism:</strong> ${interaction.mechanism}<br>
             <strong>Management:</strong> ${interaction.management}<br>
             <strong>Evidence:</strong> ${interaction.evidence.toUpperCase()}<br>
-            <strong>References:</strong> ${interaction.references.join(', ')}
+            <strong>Evidence:</strong> ${interaction.evidence.toUpperCase()}
           </div>
         `;
       });
@@ -146,7 +146,7 @@ export class PDFExportService {
             <strong>${calc.medication.name}</strong> (${calc.medication.genericName})<br>
             <strong>Calculated Dose:</strong> ${calc.calculatedDose} ${calc.unit}<br>
             <strong>Frequency:</strong> ${calc.frequency}<br>
-            <strong>Max Daily Dose:</strong> ${calc.maxDailyDose} ${calc.unit}<br>
+            <strong>Max Daily Dose:</strong> ${calc.totalDailyDose} ${calc.unit}<br>
             <strong>Warnings:</strong> ${calc.warnings.join(', ')}<br>
             <strong>Adjustments:</strong> ${calc.adjustments.join(', ')}
           </div>

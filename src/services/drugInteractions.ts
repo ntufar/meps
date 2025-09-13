@@ -146,12 +146,12 @@ export class DrugInteractionService {
       if (hasAllMedications) {
         interactions.push({
           id: `interaction-${rule.medications.join('-')}`,
+          medications: rule.medications,
           severity: rule.severity,
           description: rule.description,
-          clinicalEffect: rule.clinicalEffect,
+          mechanism: rule.clinicalEffect,
           management: rule.management,
           evidence: rule.evidence,
-          references: rule.references
         });
       }
     });
@@ -162,12 +162,12 @@ export class DrugInteractionService {
       const med2 = medications[1];
       interactions.push({
         id: 'generic-interaction',
+        medications: [med1.name, med2.name],
         severity: 'minor',
         description: `${med1.name} and ${med2.name}`,
-        clinicalEffect: 'Potential interaction - consult pharmacist or physician',
+        mechanism: 'Potential interaction - consult pharmacist or physician',
         management: 'Monitor for unusual side effects, consider timing of doses',
         evidence: 'poor',
-        references: ['General Drug Interaction Guidelines']
       });
     }
 

@@ -60,14 +60,14 @@ const DosageCalculator: React.FC<DosageCalculatorProps> = ({
                 <div>
                   <div className="text-xs text-gray-600 uppercase tracking-wide">Max Daily</div>
                   <div className="text-sm font-medium text-gray-900">
-                    {calc.maxDailyDose} {calc.unit}
+                    {calc.totalDailyDose} {calc.unit}
                   </div>
                 </div>
                 
                 <div>
                   <div className="text-xs text-gray-600 uppercase tracking-wide">Patient</div>
                   <div className="text-sm text-gray-900">
-                    {calc.patientInfo.age}y, {calc.patientInfo.weight}kg
+                    {calc.medication.name}
                   </div>
                 </div>
               </div>

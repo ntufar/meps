@@ -156,12 +156,12 @@ export class DosageCalculatorService {
     
     return {
       medication,
-      patientInfo: patient,
       calculatedDose,
       unit: rule?.unit || medication.unit,
       frequency: medication.frequency,
-      maxDailyDose: rule?.maxDailyDose || calculatedDose * 3,
+      totalDailyDose: rule?.maxDailyDose || calculatedDose * 3,
       warnings: warnings.length > 0 ? warnings : ['Monitor for side effects'],
+      notes: 'Standard dosage calculation',
       adjustments: adjustments.length > 0 ? adjustments : ['Consider individual patient factors']
     };
   }

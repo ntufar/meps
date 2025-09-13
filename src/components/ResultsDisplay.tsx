@@ -133,7 +133,7 @@ const ResultsDisplay: React.FC<ResultsDisplayProps> = ({
                 
                 <div className="space-y-2 text-sm">
                   <div>
-                    <span className="font-medium">Clinical Effect:</span> {interaction.clinicalEffect}
+                    <span className="font-medium">Mechanism:</span> {interaction.mechanism}
                   </div>
                   <div>
                     <span className="font-medium">Management:</span> {interaction.management}
@@ -145,16 +145,6 @@ const ResultsDisplay: React.FC<ResultsDisplayProps> = ({
                     </span>
                   </div>
                   
-                  {interaction.references.length > 0 && (
-                    <div>
-                      <span className="font-medium">References:</span>
-                      <ul className="list-disc list-inside ml-2 mt-1">
-                        {interaction.references.map((ref, index) => (
-                          <li key={index} className="text-xs">{ref}</li>
-                        ))}
-                      </ul>
-                    </div>
-                  )}
                 </div>
               </div>
             ))}
@@ -206,14 +196,14 @@ const ResultsDisplay: React.FC<ResultsDisplayProps> = ({
                   <div>
                     <div className="text-sm text-gray-600 mb-1">Max Daily Dose</div>
                     <div className="text-lg font-semibold text-gray-900">
-                      {calc.maxDailyDose} {calc.unit}
+                      {calc.totalDailyDose} {calc.unit}
                     </div>
                   </div>
                   
                   <div>
                     <div className="text-sm text-gray-600 mb-1">Patient Info</div>
                     <div className="text-sm text-gray-900">
-                      {calc.patientInfo.age}y, {calc.patientInfo.weight}kg
+                      {calc.medication.name}
                     </div>
                   </div>
                 </div>

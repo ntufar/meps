@@ -127,7 +127,6 @@ export class RealDosageCalculatorService {
   // Main dosage calculation method
   static calculateDosage(medication: Medication, patient: PatientInfo): DosageCalculation {
     const age = patient.age;
-    const weight = patient.weight;
     const crCl = this.calculateCreatinineClearance(patient);
     
     // Determine calculation method based on patient characteristics
