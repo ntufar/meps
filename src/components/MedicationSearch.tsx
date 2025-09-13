@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Medication } from '../types/medical';
-import { MedicationSearchService, MedicationOption } from '../services/medicationDatabase';
+import { MedicalDataService } from '../services/medicalDataService';
 
 interface MedicationSearchProps {
   onSelectMedication: (medication: Medication) => void;
@@ -9,21 +9,35 @@ interface MedicationSearchProps {
 
 const MedicationSearch: React.FC<MedicationSearchProps> = ({ onSelectMedication, onClose }) => {
   const [query, setQuery] = useState('');
-  const [results, setResults] = useState<MedicationOption[]>([]);
+  const [results, setResults] = useState<Medication[]>([]);
   const [selectedIndex, setSelectedIndex] = useState(0);
   const [showResults, setShowResults] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
-    if (query.length >= 2) {
-      const searchResults = MedicationSearchService.searchMedications(query);
-      setResults(searchResults);
-      setShowResults(true);
-      setSelectedIndex(0);
-    } else {
-      setResults([]);
-      setShowResults(false);
-    }
+    const searchMedications = async () => {
+      if (query.length >= 2) {
+        setIsLoading(true);
+        try {
+          const searchResults = await MedicalDataService.searchMedications(query);
+          setResults(searchResults);
+          setShowResults(true);
+          setSelectedIndex(0);
+        } catch (error) {
+          console.error('Error searching medications:', error);
+          setResults([]);
+        } finally {
+          setIsLoading(false);
+        }
+      } else {
+        setResults([]);
+        setShowResults(false);
+      }
+    };
+
+    const debounceTimer = setTimeout(searchMedications, 300);
+    return () => clearTimeout(debounceTimer);
   }, [query]);
 
   useEffect(() => {
@@ -56,19 +70,7 @@ const MedicationSearch: React.FC<MedicationSearchProps> = ({ onSelectMedication,
     }
   };
 
-  const handleSelectMedication = (medicationOption: MedicationOption) => {
-    const medication: Medication = {
-      id: Date.now().toString(),
-      name: medicationOption.name,
-      genericName: medicationOption.genericName,
-      dosage: medicationOption.commonDosages[0] || '10mg',
-      unit: 'mg',
-      frequency: 'Once daily',
-      route: 'oral',
-      form: medicationOption.forms[0] as any || 'tablet',
-      strength: parseInt(medicationOption.commonDosages[0]?.replace(/\D/g, '') || '10')
-    };
-
+  const handleSelectMedication = (medication: Medication) => {
     onSelectMedication(medication);
     onClose();
   };
@@ -117,7 +119,12 @@ const MedicationSearch: React.FC<MedicationSearchProps> = ({ onSelectMedication,
         </div>
 
         <div className="max-h-96 overflow-y-auto">
-          {showResults && results.length > 0 ? (
+          {isLoading ? (
+            <div className="p-8 text-center text-gray-500">
+              <div className="text-4xl mb-4">⏳</div>
+              <p>Searching medications...</p>
+            </div>
+          ) : showResults && results.length > 0 ? (
             <div className="p-2">
               {results.map((medication, index) => (
                 <div
@@ -137,25 +144,17 @@ const MedicationSearch: React.FC<MedicationSearchProps> = ({ onSelectMedication,
                       <p className="text-gray-600 text-sm">
                         {medication.genericName}
                       </p>
-                      <p className="text-gray-500 text-xs mt-1">
-                        {medication.category}
-                      </p>
-                      <p className="text-gray-600 text-sm mt-2">
-                        {medication.description}
-                      </p>
+                      <div className="flex items-center gap-4 mt-2 text-sm text-gray-500">
+                        <span>Dosage: {medication.dosage} {medication.unit}</span>
+                        <span>Frequency: {medication.frequency}</span>
+                        <span>Route: {medication.route}</span>
+                      </div>
                     </div>
                     <div className="ml-4 text-right">
-                      <div className="text-xs text-gray-500 mb-1">Common Dosages:</div>
-                      <div className="flex flex-wrap gap-1">
-                        {medication.commonDosages.slice(0, 3).map((dosage, idx) => (
-                          <span
-                            key={idx}
-                            className="px-2 py-1 bg-gray-100 text-gray-700 text-xs rounded"
-                          >
-                            {dosage}
-                          </span>
-                        ))}
-                      </div>
+                      <div className="text-xs text-gray-500 mb-1">Form:</div>
+                      <span className="px-2 py-1 bg-gray-100 text-gray-700 text-xs rounded">
+                        {medication.form}
+                      </span>
                     </div>
                   </div>
                 </div>

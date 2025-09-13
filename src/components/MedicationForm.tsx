@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Medication } from '../types/medical';
 import MedicationSearch from './MedicationSearch';
+import { MedicalDataService } from '../services/medicalDataService';
 
 interface MedicationFormProps {
   medications: Medication[];

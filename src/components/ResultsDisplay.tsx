@@ -2,11 +2,14 @@ import React from 'react';
 import { DrugInteraction, DosageCalculation, AllergyAlert } from '../types/medical';
 import { DrugInteractionService } from '../services/drugInteractions';
 import AllergyAlerts from './AllergyAlerts';
+import ContraindicationAlerts from './ContraindicationAlerts';
+import { Contraindication } from '../services/contraindicationService';
 
 interface ResultsDisplayProps {
   interactions: DrugInteraction[];
   dosageCalculations: DosageCalculation[];
   allergyAlerts: AllergyAlert[];
+  contraindications: Contraindication[];
   isLoading: boolean;
   error: string | null;
 }
@@ -15,6 +18,7 @@ const ResultsDisplay: React.FC<ResultsDisplayProps> = ({
   interactions,
   dosageCalculations,
   allergyAlerts,
+  contraindications,
   isLoading,
   error
 }) => {
@@ -65,6 +69,18 @@ const ResultsDisplay: React.FC<ResultsDisplayProps> = ({
           Safety Check Results
         </h2>
         <p className="text-slate-600 text-lg">Review drug interactions and dosage calculations</p>
+      </div>
+
+      {/* Contraindication Alerts */}
+      <div>
+        <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
+          <span className="w-6 h-6 bg-red-100 text-red-600 rounded-full flex items-center justify-center text-sm font-bold mr-2">
+            {contraindications.length}
+          </span>
+          Contraindication Alerts
+        </h3>
+        
+        <ContraindicationAlerts contraindications={contraindications} />
       </div>
 
       {/* Allergy Alerts */}
@@ -232,15 +248,23 @@ const ResultsDisplay: React.FC<ResultsDisplayProps> = ({
       {/* Summary */}
       <div className="bg-gray-50 border border-gray-200 rounded-lg p-4">
         <h4 className="font-semibold text-gray-900 mb-2">Summary</h4>
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-4 text-sm">
-          <div>
-            <span className="text-gray-600">Allergy Alerts:</span>
-            <span className={`ml-2 font-semibold ${
-              allergyAlerts.length === 0 ? 'text-green-600' : 'text-red-600'
-            }`}>
-              {allergyAlerts.length}
-            </span>
-          </div>
+                  <div className="grid grid-cols-1 md:grid-cols-5 gap-4 text-sm">
+                    <div>
+                      <span className="text-gray-600">Contraindications:</span>
+                      <span className={`ml-2 font-semibold ${
+                        contraindications.length === 0 ? 'text-green-600' : 'text-red-600'
+                      }`}>
+                        {contraindications.length}
+                      </span>
+                    </div>
+                    <div>
+                      <span className="text-gray-600">Allergy Alerts:</span>
+                      <span className={`ml-2 font-semibold ${
+                        allergyAlerts.length === 0 ? 'text-green-600' : 'text-red-600'
+                      }`}>
+                        {allergyAlerts.length}
+                      </span>
+                    </div>
           <div>
             <span className="text-gray-600">Interactions Found:</span>
             <span className="ml-2 font-semibold text-gray-900">{interactions.length}</span>

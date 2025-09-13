@@ -14,12 +14,13 @@ export interface Medication {
 
 export interface DrugInteraction {
   id: string;
-  severity: 'minor' | 'moderate' | 'major' | 'contraindicated';
+  medications: string[];
+  severity: 'minor' | 'moderate' | 'major' | 'contraindicated' | 'severe';
   description: string;
-  clinicalEffect: string;
+  mechanism: string;
   management: string;
   evidence: 'excellent' | 'good' | 'fair' | 'poor';
-  references: string[];
+  contraindicated?: boolean;
 }
 
 export interface PatientInfo {
@@ -34,12 +35,12 @@ export interface PatientInfo {
 
 export interface DosageCalculation {
   medication: Medication;
-  patientInfo: PatientInfo;
   calculatedDose: number;
   unit: string;
   frequency: string;
-  maxDailyDose: number;
+  totalDailyDose: number;
   warnings: string[];
+  notes: string;
   adjustments: string[];
 }
 

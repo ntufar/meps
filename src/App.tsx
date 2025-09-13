@@ -5,9 +5,10 @@ import PatientForm from './components/PatientForm';
 import ResultsDisplay from './components/ResultsDisplay';
 import Header from './components/Header';
 import { DrugInteractionService } from './services/drugInteractions';
-import { DosageCalculatorService } from './services/dosageCalculator';
 import { AllergyCheckerService } from './services/allergyChecker';
 import { StorageService } from './services/storageService';
+import { RealDosageCalculatorService } from './services/realDosageCalculator';
+import { ContraindicationService, Contraindication } from './services/contraindicationService';
 import DataManagement from './components/DataManagement';
 
 const initialPatientInfo: PatientInfo = {
@@ -34,6 +35,7 @@ const initialState: MEPSState = {
 function App() {
   const [state, setState] = useState<MEPSState>(initialState);
   const [activeTab, setActiveTab] = useState<'medications' | 'patient' | 'check' | 'results' | 'data'>('medications');
+  const [contraindications, setContraindications] = useState<Contraindication[]>([]);
 
   const addMedication = (medication: Medication) => {
     setState(prev => ({
@@ -80,9 +82,9 @@ function App() {
       // Simulate API call for dosage calculations
       await new Promise(resolve => setTimeout(resolve, 1000));
       
-      // Use the dosage calculator service
+      // Use the real dosage calculator service
       const calculations = state.medications.map(med => 
-        DosageCalculatorService.calculateDosage(med, state.patientInfo)
+        RealDosageCalculatorService.calculateDosage(med, state.patientInfo)
       );
 
       setState(prev => ({
@@ -123,8 +125,32 @@ function App() {
     }
   };
 
+  const checkContraindications = async () => {
+    setState(prev => ({ ...prev, isLoading: true, error: null }));
+    
+    try {
+      // Simulate API call for contraindication checking
+      await new Promise(resolve => setTimeout(resolve, 300));
+      
+      // Use the contraindication service
+      const foundContraindications = ContraindicationService.checkContraindications(state.medications, state.patientInfo);
+      setContraindications(foundContraindications);
+
+      setState(prev => ({
+        ...prev,
+        isLoading: false
+      }));
+    } catch (error) {
+      setState(prev => ({
+        ...prev,
+        error: 'Failed to check contraindications',
+        isLoading: false
+      }));
+    }
+  };
+
   const runSafetyCheck = async () => {
-    await Promise.all([checkInteractions(), calculateDosages(), checkAllergies()]);
+    await Promise.all([checkInteractions(), calculateDosages(), checkAllergies(), checkContraindications()]);
     setActiveTab('results');
   };
 
@@ -253,15 +279,16 @@ function App() {
             </div>
           )}
           
-          {activeTab === 'results' && (
-            <ResultsDisplay 
-              interactions={state.interactions}
-              dosageCalculations={state.dosageCalculations}
-              allergyAlerts={state.allergyAlerts}
-              isLoading={state.isLoading}
-              error={state.error}
-            />
-          )}
+            {activeTab === 'results' && (
+              <ResultsDisplay 
+                interactions={state.interactions}
+                dosageCalculations={state.dosageCalculations}
+                allergyAlerts={state.allergyAlerts}
+                contraindications={contraindications}
+                isLoading={state.isLoading}
+                error={state.error}
+              />
+            )}
           
           {activeTab === 'data' && (
             <DataManagement 
