@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { PatientInfo } from '../types/medical';
+import { AllergyCheckerService } from '../services/allergyChecker';
 
 interface PatientFormProps {
   patientInfo: PatientInfo;
@@ -139,12 +140,40 @@ const PatientForm: React.FC<PatientFormProps> = ({ patientInfo, onUpdatePatientI
           <label className="block text-sm font-medium text-gray-700 mb-2">
             Allergies
           </label>
+          
+          {/* Quick Add Common Allergies */}
+          <div className="mb-3">
+            <p className="text-sm text-gray-600 mb-2">Quick add common allergies:</p>
+            <div className="flex flex-wrap gap-2">
+              {AllergyCheckerService.getCommonAllergies().slice(0, 8).map(allergy => (
+                <button
+                  key={allergy}
+                  type="button"
+                  onClick={() => {
+                    if (!formData.allergies.includes(allergy)) {
+                      const updatedAllergies = [...formData.allergies, allergy];
+                      handleInputChange('allergies', updatedAllergies);
+                    }
+                  }}
+                  disabled={formData.allergies.includes(allergy)}
+                  className={`px-3 py-1 text-xs rounded-full transition-colors ${
+                    formData.allergies.includes(allergy)
+                      ? 'bg-gray-200 text-gray-500 cursor-not-allowed'
+                      : 'bg-blue-100 text-blue-700 hover:bg-blue-200'
+                  }`}
+                >
+                  {allergy}
+                </button>
+              ))}
+            </div>
+          </div>
+          
           <div className="flex space-x-2 mb-3">
             <input
               type="text"
               value={newAllergy}
               onChange={(e) => setNewAllergy(e.target.value)}
-              placeholder="Add allergy (e.g., Penicillin)"
+              placeholder="Add custom allergy (e.g., Penicillin)"
               className="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
               onKeyPress={(e) => e.key === 'Enter' && (e.preventDefault(), addAllergy())}
             />

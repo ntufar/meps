@@ -1,10 +1,12 @@
 import React from 'react';
-import { DrugInteraction, DosageCalculation } from '../types/medical';
+import { DrugInteraction, DosageCalculation, AllergyAlert } from '../types/medical';
 import { DrugInteractionService } from '../services/drugInteractions';
+import AllergyAlerts from './AllergyAlerts';
 
 interface ResultsDisplayProps {
   interactions: DrugInteraction[];
   dosageCalculations: DosageCalculation[];
+  allergyAlerts: AllergyAlert[];
   isLoading: boolean;
   error: string | null;
 }
@@ -12,6 +14,7 @@ interface ResultsDisplayProps {
 const ResultsDisplay: React.FC<ResultsDisplayProps> = ({
   interactions,
   dosageCalculations,
+  allergyAlerts,
   isLoading,
   error
 }) => {
@@ -62,6 +65,18 @@ const ResultsDisplay: React.FC<ResultsDisplayProps> = ({
           Safety Check Results
         </h2>
         <p className="text-slate-600 text-lg">Review drug interactions and dosage calculations</p>
+      </div>
+
+      {/* Allergy Alerts */}
+      <div>
+        <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
+          <span className="w-6 h-6 bg-orange-100 text-orange-600 rounded-full flex items-center justify-center text-sm font-bold mr-2">
+            {allergyAlerts.length}
+          </span>
+          Allergy Alerts
+        </h3>
+        
+        <AllergyAlerts alerts={allergyAlerts} />
       </div>
 
       {/* Drug Interactions */}
@@ -217,7 +232,15 @@ const ResultsDisplay: React.FC<ResultsDisplayProps> = ({
       {/* Summary */}
       <div className="bg-gray-50 border border-gray-200 rounded-lg p-4">
         <h4 className="font-semibold text-gray-900 mb-2">Summary</h4>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-4 text-sm">
+          <div>
+            <span className="text-gray-600">Allergy Alerts:</span>
+            <span className={`ml-2 font-semibold ${
+              allergyAlerts.length === 0 ? 'text-green-600' : 'text-red-600'
+            }`}>
+              {allergyAlerts.length}
+            </span>
+          </div>
           <div>
             <span className="text-gray-600">Interactions Found:</span>
             <span className="ml-2 font-semibold text-gray-900">{interactions.length}</span>
@@ -229,9 +252,9 @@ const ResultsDisplay: React.FC<ResultsDisplayProps> = ({
           <div>
             <span className="text-gray-600">Status:</span>
             <span className={`ml-2 font-semibold ${
-              interactions.length === 0 ? 'text-green-600' : 'text-red-600'
+              interactions.length === 0 && allergyAlerts.length === 0 ? 'text-green-600' : 'text-red-600'
             }`}>
-              {interactions.length === 0 ? 'Safe' : 'Review Required'}
+              {interactions.length === 0 && allergyAlerts.length === 0 ? 'Safe' : 'Review Required'}
             </span>
           </div>
         </div>

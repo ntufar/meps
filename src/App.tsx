@@ -6,6 +6,10 @@ import ResultsDisplay from './components/ResultsDisplay';
 import Header from './components/Header';
 import { DrugInteractionService } from './services/drugInteractions';
 import { DosageCalculatorService } from './services/dosageCalculator';
+import { AllergyCheckerService } from './services/allergyChecker';
+import { StorageService } from './services/storageService';
+import AllergyAlerts from './components/AllergyAlerts';
+import DataManagement from './components/DataManagement';
 
 const initialPatientInfo: PatientInfo = {
   age: 0,
@@ -30,7 +34,7 @@ const initialState: MEPSState = {
 
 function App() {
   const [state, setState] = useState<MEPSState>(initialState);
-  const [activeTab, setActiveTab] = useState<'medications' | 'patient' | 'check' | 'results'>('medications');
+  const [activeTab, setActiveTab] = useState<'medications' | 'patient' | 'check' | 'results' | 'data'>('medications');
 
   const addMedication = (medication: Medication) => {
     setState(prev => ({
@@ -96,10 +100,69 @@ function App() {
     }
   };
 
+  const checkAllergies = async () => {
+    setState(prev => ({ ...prev, isLoading: true, error: null }));
+    
+    try {
+      // Simulate API call for allergy checking
+      await new Promise(resolve => setTimeout(resolve, 500));
+      
+      // Use the allergy checker service
+      const allergyAlerts = AllergyCheckerService.checkAllergies(state.medications, state.patientInfo);
+
+      setState(prev => ({
+        ...prev,
+        allergyAlerts,
+        isLoading: false
+      }));
+    } catch (error) {
+      setState(prev => ({
+        ...prev,
+        error: 'Failed to check allergies',
+        isLoading: false
+      }));
+    }
+  };
+
   const runSafetyCheck = async () => {
-    await Promise.all([checkInteractions(), calculateDosages()]);
+    await Promise.all([checkInteractions(), calculateDosages(), checkAllergies()]);
     setActiveTab('results');
   };
+
+  const loadData = (newState: Partial<MEPSState>) => {
+    setState(prev => ({
+      ...prev,
+      ...newState
+    }));
+  };
+
+  const clearData = () => {
+    setState(initialState);
+  };
+
+  // Load data on component mount
+  React.useEffect(() => {
+    const savedPatientInfo = StorageService.loadPatientInfo();
+    const savedMedications = StorageService.loadMedications();
+    
+    if (savedPatientInfo || savedMedications.length > 0) {
+      setState(prev => ({
+        ...prev,
+        patientInfo: savedPatientInfo || prev.patientInfo,
+        medications: savedMedications
+      }));
+    }
+  }, []);
+
+  // Save data when it changes
+  React.useEffect(() => {
+    if (state.medications.length > 0) {
+      StorageService.saveMedications(state.medications);
+    }
+    if (state.patientInfo.age > 0 || state.patientInfo.allergies.length > 0) {
+      StorageService.savePatientInfo(state.patientInfo);
+    }
+  }, [state.medications, state.patientInfo]);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50">
@@ -113,7 +176,8 @@ function App() {
               { id: 'medications', label: 'Medications', icon: '💊' },
               { id: 'patient', label: 'Patient Info', icon: '👤' },
               { id: 'check', label: 'Safety Check', icon: '🔍' },
-              { id: 'results', label: 'Results', icon: '📊' }
+              { id: 'results', label: 'Results', icon: '📊' },
+              { id: 'data', label: 'Data Management', icon: '💾' }
             ].map(tab => (
               <button
                 key={tab.id}
@@ -194,8 +258,17 @@ function App() {
             <ResultsDisplay 
               interactions={state.interactions}
               dosageCalculations={state.dosageCalculations}
+              allergyAlerts={state.allergyAlerts}
               isLoading={state.isLoading}
               error={state.error}
+            />
+          )}
+          
+          {activeTab === 'data' && (
+            <DataManagement 
+              state={state}
+              onLoadData={loadData}
+              onClearData={clearData}
             />
           )}
         </div>
