@@ -171,7 +171,7 @@ const About: React.FC = () => {
       <div className="text-center bg-white/60 backdrop-blur-sm rounded-2xl p-8 shadow-lg border border-white/20">
         <h2 className="text-2xl font-bold text-gray-900 mb-4">About the Author</h2>
         <p className="text-gray-600 mb-4">
-          MEPS was developed by <a href="https://github.com/ntufar" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:text-blue-800 font-semibold">@ntufar</a> as a comprehensive medical error prevention system to improve patient safety and reduce medication errors.
+          MEPS was developed by <a href="https://github.com/ntufar" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:text-blue-800 font-semibold">Nicolai Tufar</a> as a comprehensive medical error prevention system to improve patient safety and reduce medication errors.
         </p>
         <div className="flex justify-center space-x-6">
           <a href="https://github.com/ntufar" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:text-blue-800 font-medium">
