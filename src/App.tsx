@@ -6,6 +6,7 @@ import ResultsDisplay from './components/ResultsDisplay';
 import Header from './components/Header';
 import MobileNavigation from './components/MobileNavigation';
 import MobileMedicationSearch from './components/MobileMedicationSearch';
+import About from './components/About';
 import { DrugInteractionService } from './services/drugInteractions';
 import { AllergyCheckerService } from './services/allergyChecker';
 import { StorageService } from './services/storageService';
@@ -36,7 +37,7 @@ const initialState: MEPSState = {
 
 function App() {
   const [state, setState] = useState<MEPSState>(initialState);
-  const [activeTab, setActiveTab] = useState<'medications' | 'patient' | 'check' | 'results' | 'data'>('medications');
+  const [activeTab, setActiveTab] = useState<'medications' | 'patient' | 'check' | 'results' | 'data' | 'about'>('medications');
   const [contraindications, setContraindications] = useState<Contraindication[]>([]);
   const [isMobile, setIsMobile] = useState(false);
   const [showMobileSearch, setShowMobileSearch] = useState(false);
@@ -218,7 +219,8 @@ function App() {
               { id: 'patient', label: 'Patient Info', icon: '👤' },
               { id: 'check', label: 'Safety Check', icon: '🔍' },
               { id: 'results', label: 'Results', icon: '📊' },
-              { id: 'data', label: 'Data Management', icon: '💾' }
+              { id: 'data', label: 'Data Management', icon: '💾' },
+              { id: 'about', label: 'About', icon: 'ℹ️' }
             ].map(tab => (
               <button
                 key={tab.id}
@@ -314,6 +316,10 @@ function App() {
               onLoadData={loadData}
               onClearData={clearData}
             />
+          )}
+          
+          {activeTab === 'about' && (
+            <About />
           )}
         </div>
       </div>

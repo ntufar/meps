@@ -33,10 +33,10 @@ const MobileNavigation: React.FC<MobileNavigationProps> = ({
       description: 'Safety checks'
     },
     {
-      id: 'settings',
-      label: 'Settings',
-      icon: '⚙️',
-      description: 'App settings'
+      id: 'about',
+      label: 'About',
+      icon: 'ℹ️',
+      description: 'About MEPS'
     }
   ];
 
