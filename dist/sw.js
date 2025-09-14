@@ -1,14 +1,14 @@
-const CACHE_NAME = 'meps-v1.0.0';
-const STATIC_CACHE = 'meps-static-v1.0.0';
-const DYNAMIC_CACHE = 'meps-dynamic-v1.0.0';
+const CACHE_NAME = 'meps-v1.0.1';
+const STATIC_CACHE = 'meps-static-v1.0.1';
+const DYNAMIC_CACHE = 'meps-dynamic-v1.0.1';
 
 // Files to cache for offline functionality
 const STATIC_FILES = [
-  '/',
-  '/index.html',
-  '/manifest.json',
-  '/icons/icon-192x192.png',
-  '/icons/icon-192x192.svg'
+  '/meps/',
+  '/meps/index.html',
+  '/meps/manifest.json',
+  '/meps/icons/icon-192x192.png',
+  '/meps/icons/icon-192x192.svg'
 ];
 
 // API endpoints to cache
@@ -158,7 +158,7 @@ self.addEventListener('notificationclick', (event) => {
   
   if (event.action === 'explore') {
     event.waitUntil(
-      clients.openWindow('/?action=safety')
+      clients.openWindow('/meps/?action=safety')
     );
   }
 });
@@ -169,7 +169,8 @@ function isApiRequest(url) {
 }
 
 function isStaticFile(url) {
-  return url.pathname.startsWith('/assets/') || 
+  return url.pathname.startsWith('/meps/assets/') || 
+         url.pathname.startsWith('/assets/') ||
          url.pathname.endsWith('.css') || 
          url.pathname.endsWith('.js') ||
          url.pathname.endsWith('.png') ||
@@ -229,7 +230,7 @@ async function handleNavigationRequest(request) {
   } catch (error) {
     // Fallback to cache only if network fails
     const cache = await caches.open(STATIC_CACHE);
-    const cachedResponse = await cache.match('/index.html');
+    const cachedResponse = await cache.match('/meps/index.html');
     
     if (cachedResponse) {
       return cachedResponse;
