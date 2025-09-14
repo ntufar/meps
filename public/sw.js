@@ -8,7 +8,7 @@ const STATIC_FILES = [
   '/index.html',
   '/manifest.json',
   '/icons/icon-192x192.png',
-  '/icons/icon-512x512.png'
+  '/icons/icon-192x192.svg'
 ];
 
 // API endpoints to cache
@@ -223,16 +223,18 @@ async function handleStaticRequest(request) {
 }
 
 async function handleNavigationRequest(request) {
-  const cache = await caches.open(STATIC_CACHE);
-  const cachedResponse = await cache.match('/index.html');
-  
-  if (cachedResponse) {
-    return cachedResponse;
-  }
-  
+  // For development, always try network first
   try {
     return await fetch(request);
   } catch (error) {
+    // Fallback to cache only if network fails
+    const cache = await caches.open(STATIC_CACHE);
+    const cachedResponse = await cache.match('/index.html');
+    
+    if (cachedResponse) {
+      return cachedResponse;
+    }
+    
     return new Response('Offline - Application not available', { status: 503 });
   }
 }

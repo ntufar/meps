@@ -19,6 +19,5 @@ export default defineConfig({
         entryFileNames: 'assets/[name]-[hash].js'
       }
     }
-  },
-  base: './'
+  }
 })
