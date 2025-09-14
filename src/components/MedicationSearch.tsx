@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Medication } from '../types/medical';
 import { MedicalDataService } from '../services/medicalDataService';
+import { OnlineMedicationService } from '../services/onlineMedicationService';
 import MedicationDetails from './MedicationDetails';
 
 interface MedicationSearchProps {
@@ -22,13 +23,41 @@ const MedicationSearch: React.FC<MedicationSearchProps> = ({ onSelectMedication,
       if (query.length >= 2) {
         setIsLoading(true);
         try {
-          const searchResults = await MedicalDataService.searchMedications(query);
-          setResults(searchResults);
+          // Search both local database and online APIs
+          const [localResults, onlineResults] = await Promise.all([
+            MedicalDataService.searchMedications(query),
+            OnlineMedicationService.searchMedications(query)
+          ]);
+          
+          // Combine results, prioritizing local results first
+          const combinedResults = [...localResults, ...onlineResults];
+          
+          // Remove duplicates based on medication name
+          const uniqueResults = combinedResults.reduce((acc, current) => {
+            const exists = acc.find(med => 
+              med.name.toLowerCase() === current.name.toLowerCase()
+            );
+            if (!exists) {
+              acc.push(current);
+            }
+            return acc;
+          }, [] as Medication[]);
+          
+          setResults(uniqueResults);
           setShowResults(true);
           setSelectedIndex(0);
         } catch (error) {
           console.error('Error searching medications:', error);
-          setResults([]);
+          // Fallback to local search only
+          try {
+            const localResults = await MedicalDataService.searchMedications(query);
+            setResults(localResults);
+            setShowResults(true);
+            setSelectedIndex(0);
+          } catch (fallbackError) {
+            console.error('Fallback search failed:', fallbackError);
+            setResults([]);
+          }
         } finally {
           setIsLoading(false);
         }
@@ -38,7 +67,7 @@ const MedicationSearch: React.FC<MedicationSearchProps> = ({ onSelectMedication,
       }
     };
 
-    const debounceTimer = setTimeout(searchMedications, 300);
+    const debounceTimer = setTimeout(searchMedications, 500); // Increased debounce for online search
     return () => clearTimeout(debounceTimer);
   }, [query]);
 
@@ -124,7 +153,8 @@ const MedicationSearch: React.FC<MedicationSearchProps> = ({ onSelectMedication,
           {isLoading ? (
             <div className="p-8 text-center text-gray-500">
               <div className="text-4xl mb-4">⏳</div>
-              <p>Searching medications...</p>
+              <p>Searching local database and online sources...</p>
+              <p className="text-sm mt-2 text-gray-400">This may take a moment</p>
             </div>
           ) : showResults && results.length > 0 ? (
             <div className="p-2">
@@ -158,9 +188,20 @@ const MedicationSearch: React.FC<MedicationSearchProps> = ({ onSelectMedication,
                     
                     {/* Medication Info */}
                     <div className="flex-1 min-w-0">
-                      <h3 className="font-semibold text-gray-900 text-lg">
-                        {medication.name}
-                      </h3>
+                      <div className="flex items-center gap-2">
+                        <h3 className="font-semibold text-gray-900 text-lg">
+                          {medication.name}
+                        </h3>
+                        {medication.id.startsWith('fda-') || medication.id.startsWith('rxnorm-') ? (
+                          <span className="px-2 py-1 bg-green-100 text-green-800 text-xs rounded-full font-medium flex items-center gap-1">
+                            🌐 Online
+                          </span>
+                        ) : (
+                          <span className="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded-full font-medium flex items-center gap-1">
+                            💾 Local
+                          </span>
+                        )}
+                      </div>
                       <p className="text-gray-600 text-sm">
                         {medication.genericName}
                       </p>
