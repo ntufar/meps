@@ -5,10 +5,33 @@
 @layer base {
   html {
     font-family: 'Inter', system-ui, sans-serif;
+    -webkit-text-size-adjust: 100%;
+    -webkit-tap-highlight-color: transparent;
   }
   
   body {
     @apply bg-gradient-to-br from-slate-50 to-blue-50 text-slate-900;
+    min-height: 100vh;
+    min-height: -webkit-fill-available;
+    overflow-x: hidden;
+  }
+  
+  /* Mobile-specific improvements */
+  @media (max-width: 768px) {
+    body {
+      font-size: 16px; /* Prevent zoom on iOS */
+    }
+  }
+  
+  /* Prevent horizontal scroll on mobile */
+  * {
+    max-width: 100%;
+  }
+  
+  /* Touch-friendly tap targets */
+  button, a, input, select, textarea {
+    min-height: 44px;
+    min-width: 44px;
   }
 }
 
@@ -79,5 +102,86 @@
   
   .severity-minor {
     @apply bg-gradient-to-r from-blue-100 to-blue-50 border-2 border-blue-300 text-blue-900;
+  }
+  
+  /* Mobile-specific styles */
+  @media (max-width: 768px) {
+    .btn-primary, .btn-secondary, .btn-danger, .btn-success {
+      @apply px-4 py-3 text-sm min-h-[48px];
+    }
+    
+    .card {
+      @apply p-4 mx-2;
+    }
+    
+    .medication-card {
+      @apply p-4 mx-2;
+    }
+    
+    .input-field {
+      @apply py-4 text-base; /* Prevent zoom on iOS */
+    }
+    
+    /* Mobile navigation */
+    .mobile-nav {
+      @apply fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 z-50;
+    }
+    
+    .mobile-nav-item {
+      @apply flex flex-col items-center justify-center py-2 px-3 text-xs font-medium;
+    }
+    
+    .mobile-nav-item.active {
+      @apply text-blue-600;
+    }
+    
+    .mobile-nav-item.inactive {
+      @apply text-gray-500;
+    }
+    
+    /* Mobile modals */
+    .mobile-modal {
+      @apply fixed inset-0 z-50 bg-black bg-opacity-50 flex items-end justify-center;
+    }
+    
+    .mobile-modal-content {
+      @apply bg-white rounded-t-2xl w-full max-h-[90vh] overflow-y-auto;
+    }
+    
+    /* Mobile search */
+    .mobile-search {
+      @apply fixed inset-0 z-50 bg-white;
+    }
+    
+    /* Mobile-friendly spacing */
+    .mobile-padding {
+      @apply px-4 py-2;
+    }
+    
+    .mobile-margin {
+      @apply mx-4 my-2;
+    }
+  }
+  
+  /* Tablet styles */
+  @media (min-width: 769px) and (max-width: 1024px) {
+    .card {
+      @apply p-6 mx-4;
+    }
+    
+    .medication-card {
+      @apply p-5 mx-4;
+    }
+  }
+  
+  /* Desktop styles */
+  @media (min-width: 1025px) {
+    .card {
+      @apply p-8 mx-6;
+    }
+    
+    .medication-card {
+      @apply p-6 mx-6;
+    }
   }
 }

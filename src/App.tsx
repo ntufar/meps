@@ -4,6 +4,8 @@ import MedicationForm from './components/MedicationForm';
 import PatientForm from './components/PatientForm';
 import ResultsDisplay from './components/ResultsDisplay';
 import Header from './components/Header';
+import MobileNavigation from './components/MobileNavigation';
+import MobileMedicationSearch from './components/MobileMedicationSearch';
 import { DrugInteractionService } from './services/drugInteractions';
 import { AllergyCheckerService } from './services/allergyChecker';
 import { StorageService } from './services/storageService';
@@ -36,12 +38,26 @@ function App() {
   const [state, setState] = useState<MEPSState>(initialState);
   const [activeTab, setActiveTab] = useState<'medications' | 'patient' | 'check' | 'results' | 'data'>('medications');
   const [contraindications, setContraindications] = useState<Contraindication[]>([]);
+  const [isMobile, setIsMobile] = useState(false);
+  const [showMobileSearch, setShowMobileSearch] = useState(false);
+
+  // Mobile detection
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
 
   const addMedication = (medication: Medication) => {
     setState(prev => ({
       ...prev,
       medications: [...prev.medications, medication]
     }));
+    setShowMobileSearch(false);
   };
 
   const updatePatientInfo = (patientInfo: PatientInfo) => {
@@ -193,9 +209,9 @@ function App() {
     <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50">
       <Header />
       
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        {/* Navigation Tabs */}
-        <div className="mb-8">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 pb-20 md:pb-8">
+        {/* Desktop Navigation Tabs */}
+        <div className="mb-8 hidden md:block">
           <nav className="flex space-x-2 bg-white/60 backdrop-blur-sm rounded-2xl p-2 shadow-lg border border-white/20">
             {[
               { id: 'medications', label: 'Medications', icon: '💊' },
@@ -226,6 +242,8 @@ function App() {
             <MedicationForm 
               medications={state.medications}
               onAddMedication={addMedication}
+              onMobileSearch={() => setShowMobileSearch(true)}
+              isMobile={isMobile}
             />
           )}
           
@@ -299,6 +317,21 @@ function App() {
           )}
         </div>
       </div>
+
+      {/* Mobile Navigation */}
+      <MobileNavigation 
+        activeTab={activeTab}
+        onTabChange={(tab) => setActiveTab(tab as any)}
+        isVisible={isMobile}
+      />
+
+      {/* Mobile Medication Search */}
+      {showMobileSearch && (
+        <MobileMedicationSearch
+          onSelectMedication={addMedication}
+          onClose={() => setShowMobileSearch(false)}
+        />
+      )}
     </div>
   );
 }

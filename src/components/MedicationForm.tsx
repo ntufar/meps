@@ -6,9 +6,16 @@ import MedicationDetails from './MedicationDetails';
 interface MedicationFormProps {
   medications: Medication[];
   onAddMedication: (medication: Medication) => void;
+  onMobileSearch?: () => void;
+  isMobile?: boolean;
 }
 
-const MedicationForm: React.FC<MedicationFormProps> = ({ medications, onAddMedication }) => {
+const MedicationForm: React.FC<MedicationFormProps> = ({ 
+  medications, 
+  onAddMedication, 
+  onMobileSearch, 
+  isMobile = false 
+}) => {
   const [formData, setFormData] = useState<Partial<Medication>>({
     name: '',
     genericName: '',
@@ -102,7 +109,7 @@ const MedicationForm: React.FC<MedicationFormProps> = ({ medications, onAddMedic
       <div className="mb-6">
         <button
           type="button"
-          onClick={() => setShowSearch(true)}
+          onClick={() => isMobile && onMobileSearch ? onMobileSearch() : setShowSearch(true)}
           className="w-full bg-gradient-to-r from-green-500 to-green-600 text-white py-3 px-6 rounded-xl font-semibold hover:from-green-600 hover:to-green-700 transition-all duration-200 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
         >
           🔍 Quick Search Medications
@@ -322,8 +329,8 @@ const MedicationForm: React.FC<MedicationFormProps> = ({ medications, onAddMedic
         </div>
       )}
 
-      {/* Medication Search Modal */}
-      {showSearch && (
+      {/* Medication Search Modal - Desktop Only */}
+      {showSearch && !isMobile && (
         <MedicationSearch
           onSelectMedication={handleSearchSelect}
           onClose={() => setShowSearch(false)}
