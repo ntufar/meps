@@ -180,7 +180,13 @@ const MobileMedicationSearch: React.FC<MobileMedicationSearchProps> = ({
                           alt={medication.name}
                           className="w-12 h-12 object-cover rounded-lg shadow-sm border border-gray-200"
                           onError={(e) => {
-                            e.currentTarget.src = 'https://via.placeholder.com/48x48/4F46E5/FFFFFF?text=' + medication.name.charAt(0);
+                            // Generate a data URI fallback
+                            const firstLetter = medication.name.charAt(0).toUpperCase();
+                            const svg = `<svg width="48" height="48" xmlns="http://www.w3.org/2000/svg">
+                              <rect width="48" height="48" fill="#4F46E5"/>
+                              <text x="24" y="30" font-family="Arial, sans-serif" font-size="18" font-weight="bold" text-anchor="middle" fill="white">${firstLetter}</text>
+                            </svg>`;
+                            e.currentTarget.src = `data:image/svg+xml;base64,${btoa(svg)}`;
                           }}
                         />
                       ) : (

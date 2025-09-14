@@ -1,14 +1,14 @@
-const CACHE_NAME = 'meps-v1.0.2';
-const STATIC_CACHE = 'meps-static-v1.0.2';
-const DYNAMIC_CACHE = 'meps-dynamic-v1.0.2';
+const CACHE_NAME = 'meps-v1.0.0';
+const STATIC_CACHE = 'meps-static-v1.0.0';
+const DYNAMIC_CACHE = 'meps-dynamic-v1.0.0';
 
 // Files to cache for offline functionality
 const STATIC_FILES = [
-  '/meps/',
-  '/meps/index.html',
-  '/meps/manifest.json',
-  '/meps/icons/icon-192x192.png',
-  '/meps/icons/icon-192x192.svg'
+  '/',
+  '/index.html',
+  '/manifest.json',
+  '/icons/icon-192x192.png',
+  '/icons/icon-192x192.svg'
 ];
 
 // API endpoints to cache
@@ -46,14 +46,15 @@ self.addEventListener('activate', (event) => {
       .then((cacheNames) => {
         return Promise.all(
           cacheNames.map((cacheName) => {
-            // Delete ALL old caches to force fresh load
-            console.log('Service Worker: Deleting cache', cacheName);
-            return caches.delete(cacheName);
+            if (cacheName !== STATIC_CACHE && cacheName !== DYNAMIC_CACHE) {
+              console.log('Service Worker: Deleting old cache', cacheName);
+              return caches.delete(cacheName);
+            }
           })
         );
       })
       .then(() => {
-        console.log('Service Worker: All caches cleared, activated');
+        console.log('Service Worker: Activated');
         return self.clients.claim();
       })
   );
@@ -157,7 +158,7 @@ self.addEventListener('notificationclick', (event) => {
   
   if (event.action === 'explore') {
     event.waitUntil(
-      clients.openWindow('/meps/?action=safety')
+      clients.openWindow('/?action=safety')
     );
   }
 });
@@ -168,8 +169,7 @@ function isApiRequest(url) {
 }
 
 function isStaticFile(url) {
-  return url.pathname.startsWith('/meps/assets/') || 
-         url.pathname.startsWith('/assets/') ||
+  return url.pathname.startsWith('/assets/') || 
          url.pathname.endsWith('.css') || 
          url.pathname.endsWith('.js') ||
          url.pathname.endsWith('.png') ||
@@ -229,7 +229,7 @@ async function handleNavigationRequest(request) {
   } catch (error) {
     // Fallback to cache only if network fails
     const cache = await caches.open(STATIC_CACHE);
-    const cachedResponse = await cache.match('/meps/index.html');
+    const cachedResponse = await cache.match('/index.html');
     
     if (cachedResponse) {
       return cachedResponse;

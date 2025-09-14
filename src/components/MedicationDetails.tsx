@@ -32,7 +32,13 @@ const MedicationDetails: React.FC<MedicationDetailsProps> = ({ medication, onClo
                   alt={medication.name}
                   className="w-24 h-24 object-cover rounded-lg shadow-md border-2 border-gray-200"
                   onError={(e) => {
-                    e.currentTarget.src = 'https://via.placeholder.com/96x96/4F46E5/FFFFFF?text=' + medication.name.charAt(0);
+                    // Generate a data URI fallback
+                    const firstLetter = medication.name.charAt(0).toUpperCase();
+                    const svg = `<svg width="96" height="96" xmlns="http://www.w3.org/2000/svg">
+                      <rect width="96" height="96" fill="#4F46E5"/>
+                      <text x="48" y="60" font-family="Arial, sans-serif" font-size="36" font-weight="bold" text-anchor="middle" fill="white">${firstLetter}</text>
+                    </svg>`;
+                    e.currentTarget.src = `data:image/svg+xml;base64,${btoa(svg)}`;
                   }}
                 />
               ) : (

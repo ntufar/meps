@@ -176,7 +176,13 @@ const MedicationSearch: React.FC<MedicationSearchProps> = ({ onSelectMedication,
                           alt={medication.name}
                           className="w-16 h-16 object-cover rounded-lg shadow-sm border border-gray-200"
                           onError={(e) => {
-                            e.currentTarget.src = 'https://via.placeholder.com/64x64/4F46E5/FFFFFF?text=' + medication.name.charAt(0);
+                            // Generate a data URI fallback
+                            const firstLetter = medication.name.charAt(0).toUpperCase();
+                            const svg = `<svg width="64" height="64" xmlns="http://www.w3.org/2000/svg">
+                              <rect width="64" height="64" fill="#4F46E5"/>
+                              <text x="32" y="40" font-family="Arial, sans-serif" font-size="24" font-weight="bold" text-anchor="middle" fill="white">${firstLetter}</text>
+                            </svg>`;
+                            e.currentTarget.src = `data:image/svg+xml;base64,${btoa(svg)}`;
                           }}
                         />
                       ) : (

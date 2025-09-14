@@ -340,8 +340,12 @@ export class OnlineMedicationService {
   }
 
   private static generateMedicationImage(name: string): string {
-    // Generate a placeholder image URL
-    const encodedName = encodeURIComponent(name);
-    return `https://via.placeholder.com/64x64/4F46E5/FFFFFF?text=${encodedName.charAt(0)}`;
+    // Generate a data URI placeholder image
+    const firstLetter = name.charAt(0).toUpperCase();
+    const svg = `<svg width="64" height="64" xmlns="http://www.w3.org/2000/svg">
+      <rect width="64" height="64" fill="#4F46E5"/>
+      <text x="32" y="40" font-family="Arial, sans-serif" font-size="24" font-weight="bold" text-anchor="middle" fill="white">${firstLetter}</text>
+    </svg>`;
+    return `data:image/svg+xml;base64,${btoa(svg)}`;
   }
 }
