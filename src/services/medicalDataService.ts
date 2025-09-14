@@ -71,7 +71,15 @@ export class MedicalDataService {
       frequency: 'once daily',
       route: 'oral',
       strength: 10,
-      form: 'tablet'
+      form: 'tablet',
+      image: 'https://images.drugs.com/prodrug/lisinopril-10mg-tablet.jpg',
+      description: 'ACE inhibitor used to treat high blood pressure and heart failure. Lisinopril works by relaxing blood vessels and reducing the workload on the heart.',
+      category: 'ACE Inhibitor',
+      manufacturer: 'Various',
+      indications: ['Hypertension', 'Heart failure', 'Heart attack prevention', 'Diabetic nephropathy'],
+      contraindications: ['Pregnancy (2nd and 3rd trimester)', 'Angioedema history', 'Bilateral renal artery stenosis'],
+      sideEffects: ['Dry cough', 'Dizziness', 'Fatigue', 'Hyperkalemia'],
+      monitoring: ['Blood pressure', 'Kidney function', 'Potassium levels', 'Angioedema signs']
     },
     {
       id: 'atorvastatin-001',
@@ -82,7 +90,15 @@ export class MedicalDataService {
       frequency: 'once daily',
       route: 'oral',
       strength: 20,
-      form: 'tablet'
+      form: 'tablet',
+      image: 'https://images.drugs.com/prodrug/atorvastatin-20mg-tablet.jpg',
+      description: 'Statin medication used to lower cholesterol and reduce the risk of heart disease. Atorvastatin works by blocking an enzyme needed to make cholesterol in the liver.',
+      category: 'Statin',
+      manufacturer: 'Various',
+      indications: ['High cholesterol', 'Heart disease prevention', 'Stroke prevention', 'Atherosclerosis'],
+      contraindications: ['Active liver disease', 'Pregnancy', 'Breastfeeding', 'Severe muscle disorders'],
+      sideEffects: ['Muscle pain', 'Liver problems', 'Digestive issues', 'Memory problems'],
+      monitoring: ['Liver function tests', 'Muscle symptoms', 'Cholesterol levels', 'Blood sugar']
     },
     // Antibiotics
     {
@@ -113,7 +129,15 @@ export class MedicalDataService {
       frequency: 'once daily',
       route: 'oral',
       strength: 250,
-      form: 'tablet'
+      form: 'tablet',
+      image: 'https://images.drugs.com/prodrug/azithromycin-250mg-tablet.jpg',
+      description: 'Macrolide antibiotic used to treat bacterial infections. Azithromycin works by stopping bacterial protein synthesis, leading to bacterial death.',
+      category: 'Antibiotic',
+      manufacturer: 'Various',
+      indications: ['Respiratory infections', 'Skin infections', 'Ear infections', 'Sexually transmitted diseases'],
+      contraindications: ['Severe liver disease', 'QT prolongation', 'Myasthenia gravis'],
+      sideEffects: ['Nausea', 'Diarrhea', 'Stomach pain', 'Headache'],
+      monitoring: ['Liver function', 'Heart rhythm', 'Allergic reactions']
     },
     {
       id: 'ciprofloxacin-001',
@@ -136,7 +160,15 @@ export class MedicalDataService {
       frequency: 'every 6 hours',
       route: 'oral',
       strength: 400,
-      form: 'tablet'
+      form: 'tablet',
+      image: 'https://images.drugs.com/prodrug/ibuprofen-400mg-tablet.jpg',
+      description: 'Nonsteroidal anti-inflammatory drug (NSAID) used for pain relief, fever reduction, and inflammation. Ibuprofen works by blocking the production of prostaglandins.',
+      category: 'NSAID',
+      manufacturer: 'Various',
+      indications: ['Pain relief', 'Fever reduction', 'Inflammation', 'Arthritis'],
+      contraindications: ['Active peptic ulcer', 'Severe heart failure', 'Severe liver disease', 'Third trimester pregnancy'],
+      sideEffects: ['Stomach upset', 'Nausea', 'Dizziness', 'Headache'],
+      monitoring: ['Gastrointestinal symptoms', 'Kidney function', 'Blood pressure']
     },
     {
       id: 'acetaminophen-001',
@@ -147,7 +179,15 @@ export class MedicalDataService {
       frequency: 'every 6 hours',
       route: 'oral',
       strength: 650,
-      form: 'tablet'
+      form: 'tablet',
+      image: 'https://images.drugs.com/prodrug/acetaminophen-650mg-tablet.jpg',
+      description: 'Pain reliever and fever reducer. Acetaminophen works by blocking pain signals in the brain and reducing fever by affecting the heat-regulating center.',
+      category: 'Analgesic',
+      manufacturer: 'Various',
+      indications: ['Pain relief', 'Fever reduction', 'Headache', 'Muscle aches'],
+      contraindications: ['Severe liver disease', 'Allergy to acetaminophen', 'Chronic alcohol use'],
+      sideEffects: ['Liver damage (overdose)', 'Allergic reactions', 'Skin rash'],
+      monitoring: ['Liver function (high doses)', 'Allergic reactions']
     },
     {
       id: 'morphine-001',
@@ -204,7 +244,15 @@ export class MedicalDataService {
       frequency: 'twice daily',
       route: 'oral',
       strength: 500,
-      form: 'tablet'
+      form: 'tablet',
+      image: 'https://images.drugs.com/prodrug/metformin-500mg-tablet.jpg',
+      description: 'First-line medication for type 2 diabetes. Metformin works by reducing glucose production in the liver and improving insulin sensitivity.',
+      category: 'Antidiabetic',
+      manufacturer: 'Various',
+      indications: ['Type 2 diabetes', 'Prediabetes', 'Polycystic ovary syndrome'],
+      contraindications: ['Severe kidney disease', 'Severe liver disease', 'Heart failure', 'Contrast media procedures'],
+      sideEffects: ['Nausea', 'Diarrhea', 'Stomach upset', 'Metallic taste'],
+      monitoring: ['Blood glucose', 'Kidney function', 'Lactate levels', 'B12 levels']
     },
     {
       id: 'insulin-001',
