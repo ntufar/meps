@@ -1,6 +1,6 @@
-const CACHE_NAME = 'meps-v1.0.1';
-const STATIC_CACHE = 'meps-static-v1.0.1';
-const DYNAMIC_CACHE = 'meps-dynamic-v1.0.1';
+const CACHE_NAME = 'meps-v1.0.2';
+const STATIC_CACHE = 'meps-static-v1.0.2';
+const DYNAMIC_CACHE = 'meps-dynamic-v1.0.2';
 
 // Files to cache for offline functionality
 const STATIC_FILES = [
@@ -46,15 +46,14 @@ self.addEventListener('activate', (event) => {
       .then((cacheNames) => {
         return Promise.all(
           cacheNames.map((cacheName) => {
-            if (cacheName !== STATIC_CACHE && cacheName !== DYNAMIC_CACHE) {
-              console.log('Service Worker: Deleting old cache', cacheName);
-              return caches.delete(cacheName);
-            }
+            // Delete ALL old caches to force fresh load
+            console.log('Service Worker: Deleting cache', cacheName);
+            return caches.delete(cacheName);
           })
         );
       })
       .then(() => {
-        console.log('Service Worker: Activated');
+        console.log('Service Worker: All caches cleared, activated');
         return self.clients.claim();
       })
   );
