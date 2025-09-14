@@ -154,7 +154,7 @@ const About: React.FC = () => {
           </div>
           <div>
             <h3 className="text-lg font-semibold text-gray-900 mb-2">Last Updated</h3>
-            <p className="text-gray-600">September 2024</p>
+            <p className="text-gray-600">September 2025</p>
           </div>
           <div>
             <h3 className="text-lg font-semibold text-gray-900 mb-2">Data Source</h3>
@@ -167,18 +167,31 @@ const About: React.FC = () => {
         </div>
       </div>
 
-      {/* Contact Information */}
+      {/* Author Information */}
+      <div className="text-center bg-white/60 backdrop-blur-sm rounded-2xl p-8 shadow-lg border border-white/20">
+        <h2 className="text-2xl font-bold text-gray-900 mb-4">About the Author</h2>
+        <p className="text-gray-600 mb-4">
+          MEPS was developed by <a href="https://github.com/ntufar" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:text-blue-800 font-semibold">@ntufar</a> as a comprehensive medical error prevention system to improve patient safety and reduce medication errors.
+        </p>
+        <div className="flex justify-center space-x-6">
+          <a href="https://github.com/ntufar" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:text-blue-800 font-medium">
+            👨‍💻 GitHub Profile
+          </a>
+          <a href="https://github.com/ntufar/meps" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:text-blue-800 font-medium">
+            🔗 GitHub Repository
+          </a>
+        </div>
+      </div>
+
+      {/* Support Information */}
       <div className="text-center bg-white/60 backdrop-blur-sm rounded-2xl p-8 shadow-lg border border-white/20">
         <h2 className="text-2xl font-bold text-gray-900 mb-4">Need Help?</h2>
         <p className="text-gray-600 mb-4">
-          For technical support, feature requests, or general inquiries about MEPS, please contact our support team.
+          For technical support, feature requests, bug reports, or general inquiries about MEPS, please visit our GitHub issues page.
         </p>
-        <div className="flex justify-center space-x-6">
-          <a href="mailto:support@meps.health" className="text-blue-600 hover:text-blue-800 font-medium">
-            📧 support@meps.health
-          </a>
-          <a href="https://github.com/ntufar/meps" className="text-blue-600 hover:text-blue-800 font-medium">
-            🔗 GitHub Repository
+        <div className="flex justify-center">
+          <a href="https://github.com/ntufar/meps/issues" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:text-blue-800 font-medium text-lg">
+            🐛 GitHub Issues
           </a>
         </div>
       </div>
