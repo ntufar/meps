@@ -1,0 +1,55 @@
+{
+  "name": "MEPS - Medical Error Prevention System",
+  "short_name": "MEPS",
+  "description": "Advanced medication safety and interaction checking system for healthcare professionals",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#4F46E5",
+  "orientation": "portrait-primary",
+  "scope": "/",
+  "lang": "en",
+  "categories": ["medical", "healthcare", "productivity"],
+  "icons": [
+    {
+      "src": "/icons/icon-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "maskable any"
+    },
+    {
+      "src": "/icons/icon-192x192.svg",
+      "sizes": "192x192",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Search Medications",
+      "short_name": "Search",
+      "description": "Search for medications in the database",
+      "url": "/?action=search",
+      "icons": [
+        {
+          "src": "/icons/search-icon.png",
+          "sizes": "96x96"
+        }
+      ]
+    },
+    {
+      "name": "Safety Check",
+      "short_name": "Safety",
+      "description": "Run comprehensive safety checks",
+      "url": "/?action=safety",
+      "icons": [
+        {
+          "src": "/icons/safety-icon.png",
+          "sizes": "96x96"
+        }
+      ]
+    }
+  ],
+  "related_applications": [],
+  "prefer_related_applications": false
+}

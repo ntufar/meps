@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>MEPS Icon Generator</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; }
+        .icon { margin: 10px; display: inline-block; }
+        canvas { border: 1px solid #ccc; }
+    </style>
+</head>
+<body>
+    <h1>MEPS PWA Icons Generator</h1>
+    <p>This will generate the required PWA icons for MEPS.</p>
+    
+    <div id="icons"></div>
+    
+    <script>
+        const sizes = [16, 32, 72, 96, 128, 144, 152, 192, 384, 512];
+        const iconsContainer = document.getElementById('icons');
+        
+        sizes.forEach(size => {
+            const canvas = document.createElement('canvas');
+            canvas.width = size;
+            canvas.height = size;
+            const ctx = canvas.getContext('2d');
+            
+            // Background gradient
+            const gradient = ctx.createLinearGradient(0, 0, size, size);
+            gradient.addColorStop(0, '#4F46E5');
+            gradient.addColorStop(1, '#7C3AED');
+            ctx.fillStyle = gradient;
+            ctx.fillRect(0, 0, size, size);
+            
+            // Medical cross icon
+            ctx.fillStyle = 'white';
+            const crossSize = size * 0.4;
+            const crossX = (size - crossSize) / 2;
+            const crossY = (size - crossSize) / 2;
+            const lineWidth = size * 0.08;
+            
+            // Horizontal line
+            ctx.fillRect(crossX, crossY + crossSize/2 - lineWidth/2, crossSize, lineWidth);
+            // Vertical line
+            ctx.fillRect(crossX + crossSize/2 - lineWidth/2, crossY, lineWidth, crossSize);
+            
+            // Add to page
+            const div = document.createElement('div');
+            div.className = 'icon';
+            div.innerHTML = `<canvas width="${size}" height="${size}"></canvas><br>${size}x${size}`;
+            div.querySelector('canvas').getContext('2d').drawImage(canvas, 0, 0);
+            iconsContainer.appendChild(div);
+            
+            // Download functionality
+            canvas.toBlob(blob => {
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `icon-${size}x${size}.png`;
+                a.textContent = 'Download';
+                a.style.display = 'block';
+                a.style.marginTop = '5px';
+                div.appendChild(a);
+            });
+        });
+    </script>
+</body>
+</html>
