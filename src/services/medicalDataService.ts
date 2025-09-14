@@ -14,7 +14,15 @@ export class MedicalDataService {
       frequency: 'once daily',
       route: 'oral',
       strength: 5,
-      form: 'tablet'
+      form: 'tablet',
+      image: 'https://images.drugs.com/prodrug/warfarin-5mg-tablet.jpg',
+      description: 'Anticoagulant medication used to prevent blood clots. Warfarin works by blocking the formation of vitamin K-dependent clotting factors.',
+      category: 'Anticoagulant',
+      manufacturer: 'Various',
+      indications: ['Atrial fibrillation', 'Deep vein thrombosis', 'Pulmonary embolism', 'Heart valve replacement'],
+      contraindications: ['Active bleeding', 'Severe liver disease', 'Pregnancy'],
+      sideEffects: ['Bleeding', 'Bruising', 'Nausea', 'Hair loss'],
+      monitoring: ['INR levels', 'Bleeding signs', 'Liver function tests']
     },
     {
       id: 'aspirin-001',
@@ -25,7 +33,15 @@ export class MedicalDataService {
       frequency: 'once daily',
       route: 'oral',
       strength: 81,
-      form: 'tablet'
+      form: 'tablet',
+      image: 'https://images.drugs.com/prodrug/aspirin-81mg-tablet.jpg',
+      description: 'Nonsteroidal anti-inflammatory drug (NSAID) used for pain relief, fever reduction, and cardiovascular protection. Low-dose aspirin is commonly used for heart attack and stroke prevention.',
+      category: 'NSAID / Antiplatelet',
+      manufacturer: 'Various',
+      indications: ['Pain relief', 'Fever reduction', 'Cardiovascular protection', 'Heart attack prevention'],
+      contraindications: ['Active peptic ulcer', 'Severe liver disease', 'Bleeding disorders', 'Children with viral infections'],
+      sideEffects: ['Stomach upset', 'Bleeding', 'Ringing in ears', 'Allergic reactions'],
+      monitoring: ['Gastrointestinal symptoms', 'Bleeding signs', 'Liver function']
     },
     {
       id: 'metoprolol-001',
@@ -36,7 +52,15 @@ export class MedicalDataService {
       frequency: 'twice daily',
       route: 'oral',
       strength: 50,
-      form: 'tablet'
+      form: 'tablet',
+      image: 'https://images.drugs.com/prodrug/metoprolol-50mg-tablet.jpg',
+      description: 'Beta-blocker medication used to treat high blood pressure, chest pain, and heart failure. Metoprolol works by blocking beta-adrenergic receptors in the heart.',
+      category: 'Beta-blocker',
+      manufacturer: 'Various',
+      indications: ['Hypertension', 'Angina pectoris', 'Heart failure', 'Heart attack prevention'],
+      contraindications: ['Severe asthma', 'Heart block', 'Severe heart failure', 'Shock'],
+      sideEffects: ['Fatigue', 'Dizziness', 'Slow heart rate', 'Cold hands and feet'],
+      monitoring: ['Blood pressure', 'Heart rate', 'Heart function', 'Blood sugar']
     },
     {
       id: 'lisinopril-001',
@@ -70,7 +94,15 @@ export class MedicalDataService {
       frequency: 'three times daily',
       route: 'oral',
       strength: 500,
-      form: 'capsule'
+      form: 'capsule',
+      image: 'https://images.drugs.com/prodrug/amoxicillin-500mg-capsule.jpg',
+      description: 'Penicillin antibiotic used to treat bacterial infections. Amoxicillin works by interfering with bacterial cell wall synthesis, leading to bacterial death.',
+      category: 'Antibiotic',
+      manufacturer: 'Various',
+      indications: ['Respiratory infections', 'Urinary tract infections', 'Skin infections', 'Ear infections'],
+      contraindications: ['Penicillin allergy', 'Severe liver disease', 'Mononucleosis'],
+      sideEffects: ['Nausea', 'Diarrhea', 'Rash', 'Allergic reactions'],
+      monitoring: ['Allergic reactions', 'Liver function', 'Kidney function']
     },
     {
       id: 'azithromycin-001',

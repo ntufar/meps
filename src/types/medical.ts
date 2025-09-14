@@ -10,6 +10,14 @@ export interface Medication {
   route: 'oral' | 'injection' | 'topical' | 'inhalation' | 'rectal' | 'vaginal';
   strength?: number;
   form: 'tablet' | 'capsule' | 'liquid' | 'injection' | 'cream' | 'patch' | 'inhaler';
+  image?: string;
+  description?: string;
+  category?: string;
+  manufacturer?: string;
+  indications?: string[];
+  contraindications?: string[];
+  sideEffects?: string[];
+  monitoring?: string[];
 }
 
 export interface DrugInteraction {

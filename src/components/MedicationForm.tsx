@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Medication } from '../types/medical';
 import MedicationSearch from './MedicationSearch';
+import MedicationDetails from './MedicationDetails';
 
 interface MedicationFormProps {
   medications: Medication[];
@@ -21,6 +22,7 @@ const MedicationForm: React.FC<MedicationFormProps> = ({ medications, onAddMedic
 
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [showSearch, setShowSearch] = useState(false);
+  const [selectedMedication, setSelectedMedication] = useState<Medication | null>(null);
 
   const validateForm = (): boolean => {
     const newErrors: Record<string, string> = {};
@@ -261,17 +263,58 @@ const MedicationForm: React.FC<MedicationFormProps> = ({ medications, onAddMedic
           <div className="space-y-2">
             {medications.map((med) => (
               <div key={med.id} className="medication-card">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <span className="font-semibold text-slate-900 text-lg">{med.name}</span>
-                    <span className="text-slate-600 ml-2">({med.genericName})</span>
+                <div className="flex items-center space-x-4">
+                  {/* Medication Image */}
+                  <div className="flex-shrink-0">
+                    {med.image ? (
+                      <img
+                        src={med.image}
+                        alt={med.name}
+                        className="w-12 h-12 object-cover rounded-lg shadow-sm border border-gray-200"
+                        onError={(e) => {
+                          e.currentTarget.src = 'https://via.placeholder.com/48x48/4F46E5/FFFFFF?text=' + med.name.charAt(0);
+                        }}
+                      />
+                    ) : (
+                      <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-lg shadow-sm border border-gray-200 flex items-center justify-center text-white text-sm font-bold">
+                        {med.name.charAt(0)}
+                      </div>
+                    )}
+                  </div>
+                  
+                  {/* Medication Info */}
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-center space-x-2">
+                      <span className="font-semibold text-slate-900 text-lg">{med.name}</span>
+                      <span className="text-slate-600">({med.genericName})</span>
+                      {med.category && (
+                        <span className="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded-full font-medium">
+                          {med.category}
+                        </span>
+                      )}
+                    </div>
                     <div className="text-sm text-slate-500 mt-1">
                       {med.dosage} {med.unit} • {med.frequency} • {med.route}
                     </div>
+                    {med.description && (
+                      <p className="text-slate-600 text-sm mt-1 line-clamp-1">
+                        {med.description}
+                      </p>
+                    )}
                   </div>
-                  <span className="text-xs bg-gradient-to-r from-blue-500 to-blue-600 text-white px-3 py-1 rounded-full font-medium">
-                    {med.form}
-                  </span>
+                  
+                  {/* Action Buttons */}
+                  <div className="flex-shrink-0 flex items-center space-x-2">
+                    <button
+                      onClick={() => setSelectedMedication(med)}
+                      className="px-3 py-1 bg-gray-100 hover:bg-gray-200 text-gray-700 text-xs rounded transition-colors"
+                    >
+                      Details
+                    </button>
+                    <span className="text-xs bg-gradient-to-r from-blue-500 to-blue-600 text-white px-3 py-1 rounded-full font-medium">
+                      {med.form}
+                    </span>
+                  </div>
                 </div>
               </div>
             ))}
@@ -284,6 +327,14 @@ const MedicationForm: React.FC<MedicationFormProps> = ({ medications, onAddMedic
         <MedicationSearch
           onSelectMedication={handleSearchSelect}
           onClose={() => setShowSearch(false)}
+        />
+      )}
+      
+      {/* Medication Details Modal */}
+      {selectedMedication && (
+        <MedicationDetails
+          medication={selectedMedication}
+          onClose={() => setSelectedMedication(null)}
         />
       )}
     </div>

@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Medication } from '../types/medical';
 import { MedicalDataService } from '../services/medicalDataService';
+import MedicationDetails from './MedicationDetails';
 
 interface MedicationSearchProps {
   onSelectMedication: (medication: Medication) => void;
@@ -13,6 +14,7 @@ const MedicationSearch: React.FC<MedicationSearchProps> = ({ onSelectMedication,
   const [selectedIndex, setSelectedIndex] = useState(0);
   const [showResults, setShowResults] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [selectedMedication, setSelectedMedication] = useState<Medication | null>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
@@ -129,32 +131,70 @@ const MedicationSearch: React.FC<MedicationSearchProps> = ({ onSelectMedication,
               {results.map((medication, index) => (
                 <div
                   key={`${medication.name}-${index}`}
-                  className={`p-4 rounded-lg cursor-pointer transition-colors ${
+                  className={`p-4 rounded-lg transition-colors ${
                     index === selectedIndex
                       ? 'bg-blue-100 border-2 border-blue-300'
                       : 'hover:bg-gray-50 border-2 border-transparent'
                   }`}
-                  onClick={() => handleSelectMedication(medication)}
                 >
-                  <div className="flex justify-between items-start">
-                    <div className="flex-1">
+                  <div className="flex items-start space-x-4">
+                    {/* Medication Image */}
+                    <div className="flex-shrink-0">
+                      {medication.image ? (
+                        <img
+                          src={medication.image}
+                          alt={medication.name}
+                          className="w-16 h-16 object-cover rounded-lg shadow-sm border border-gray-200"
+                          onError={(e) => {
+                            e.currentTarget.src = 'https://via.placeholder.com/64x64/4F46E5/FFFFFF?text=' + medication.name.charAt(0);
+                          }}
+                        />
+                      ) : (
+                        <div className="w-16 h-16 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-lg shadow-sm border border-gray-200 flex items-center justify-center text-white text-lg font-bold">
+                          {medication.name.charAt(0)}
+                        </div>
+                      )}
+                    </div>
+                    
+                    {/* Medication Info */}
+                    <div className="flex-1 min-w-0">
                       <h3 className="font-semibold text-gray-900 text-lg">
                         {medication.name}
                       </h3>
                       <p className="text-gray-600 text-sm">
                         {medication.genericName}
                       </p>
+                      {medication.category && (
+                        <span className="inline-block px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded-full font-medium mt-1">
+                          {medication.category}
+                        </span>
+                      )}
                       <div className="flex items-center gap-4 mt-2 text-sm text-gray-500">
                         <span>Dosage: {medication.dosage} {medication.unit}</span>
                         <span>Frequency: {medication.frequency}</span>
                         <span>Route: {medication.route}</span>
                       </div>
+                      {medication.description && (
+                        <p className="text-gray-600 text-sm mt-2 line-clamp-2">
+                          {medication.description}
+                        </p>
+                      )}
                     </div>
-                    <div className="ml-4 text-right">
-                      <div className="text-xs text-gray-500 mb-1">Form:</div>
-                      <span className="px-2 py-1 bg-gray-100 text-gray-700 text-xs rounded">
-                        {medication.form}
-                      </span>
+                    
+                    {/* Action Buttons */}
+                    <div className="flex-shrink-0 flex flex-col space-y-2">
+                      <button
+                        onClick={() => setSelectedMedication(medication)}
+                        className="px-3 py-1 bg-gray-100 hover:bg-gray-200 text-gray-700 text-xs rounded transition-colors"
+                      >
+                        View Details
+                      </button>
+                      <button
+                        onClick={() => handleSelectMedication(medication)}
+                        className="px-3 py-1 bg-blue-600 hover:bg-blue-700 text-white text-xs rounded transition-colors"
+                      >
+                        Select
+                      </button>
                     </div>
                   </div>
                 </div>
@@ -186,6 +226,14 @@ const MedicationSearch: React.FC<MedicationSearchProps> = ({ onSelectMedication,
           </div>
         </div>
       </div>
+      
+      {/* Medication Details Modal */}
+      {selectedMedication && (
+        <MedicationDetails
+          medication={selectedMedication}
+          onClose={() => setSelectedMedication(null)}
+        />
+      )}
     </div>
   );
 };
